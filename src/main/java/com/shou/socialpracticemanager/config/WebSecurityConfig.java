@@ -1,11 +1,14 @@
 package com.shou.socialpracticemanager.config;
 
-import com.shou.socialpracticemanager.Utils.*;
+import com.shou.socialpracticemanager.Utils.NonePasswordEncoder;
+import com.shou.socialpracticemanager.security.*;
+import com.shou.socialpracticemanager.security.handler.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -40,9 +43,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(new NonePasswordEncoder());
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(jwtUserDetailsService)
+                .passwordEncoder(new NonePasswordEncoder());
     }
+
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -51,28 +57,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();
 
-        httpSecurity.authorizeRequests()
-                .antMatchers("/api/user/all").permitAll()
-                .antMatchers("/api/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
+        httpSecurity
+                .authorizeRequests()
+                .antMatchers("/api/user/all/open").permitAll()
+                .anyRequest().authenticated();
+
+        httpSecurity
                 .formLogin()
-                .loginProcessingUrl("/api/login")
+                .loginProcessingUrl("/api/login/open")
                 .successHandler(loginAuthenticationSuccessHandler) // 登录成功
                 .failureHandler(loginAuthenticationFailureHandler) // 登录失败
-                .permitAll()
-                .and()
+                .permitAll();
+
+        httpSecurity
                 .logout()//默认注销行为为logout
                 .logoutUrl("/api/logout")
                 .logoutSuccessHandler(logoutAuthenticationSuccessHandler)
                 .permitAll();
 
-        httpSecurity.httpBasic()
+        httpSecurity
+                .httpBasic()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint);
-        httpSecurity.exceptionHandling()
+
+        httpSecurity
+                .exceptionHandling()
                 .accessDeniedHandler(accessAuthenticationDeniedHandler);
-        httpSecurity.sessionManagement()
+
+        httpSecurity
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+        httpSecurity
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

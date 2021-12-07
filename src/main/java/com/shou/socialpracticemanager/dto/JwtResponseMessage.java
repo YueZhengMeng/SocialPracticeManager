@@ -1,7 +1,7 @@
 package com.shou.socialpracticemanager.dto;
 
 
-import com.shou.socialpracticemanager.Utils.ResultEnum;
+import com.shou.socialpracticemanager.security.handler.ResultEnum;
 import java.util.HashMap;
 import java.util.Map;
 

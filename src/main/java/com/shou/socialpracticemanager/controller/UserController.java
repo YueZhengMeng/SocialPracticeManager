@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/all")
+    @GetMapping("/all/open")
     @ResponseStatus(HttpStatus.OK)
     List<User> getAllUser()
     {

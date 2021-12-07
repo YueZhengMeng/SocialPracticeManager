@@ -4,24 +4,26 @@ package com.shou.socialpracticemanager.Utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.AlgorithmMismatchException;
-import com.auth0.jwt.exceptions.InvalidClaimException;
-import com.auth0.jwt.exceptions.SignatureVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.shou.socialpracticemanager.security.JwtUserDetail;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
-import java.util.Map;
 
 
 @Component
 public class JwtUtil {
-    private static final String salt = "1959234";
+    private static final String salt = "19512151959234";
 
-    public static String doGenerateToken(Map<String, String> claims) {
+    public static String generateToken(Authentication authentication)
+    {
+        JwtUserDetail jwtUserDetail = (JwtUserDetail) (authentication.getPrincipal());
+        int userid = jwtUserDetail.getUserid();
+        String username = jwtUserDetail.getUsername();
         JWTCreator.Builder builder = JWT.create();
-        claims.forEach(builder::withClaim);
+        builder.withClaim("userid", userid);
+        builder.withClaim("username",username);
         Calendar instance = Calendar.getInstance();
         instance.add(Calendar.HOUR, 24);
         builder.withExpiresAt(instance.getTime());

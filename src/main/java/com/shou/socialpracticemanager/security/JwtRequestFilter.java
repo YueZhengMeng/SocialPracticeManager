@@ -1,9 +1,11 @@
-package com.shou.socialpracticemanager.Utils;
+package com.shou.socialpracticemanager.security;
 
 import com.auth0.jwt.exceptions.AlgorithmMismatchException;
 import com.auth0.jwt.exceptions.InvalidClaimException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.shou.socialpracticemanager.Utils.JwtUtil;
+import com.shou.socialpracticemanager.security.handler.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,8 +34,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        final String requestTokenHeader = request.getHeader("Authorization");
+        if (request.getRequestURI().endsWith("/open"))
+        {
+            chain.doFilter(request, response);
+            return;
+        }
 
+        final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             String jwtToken = requestTokenHeader.substring("Bearer ".length());
@@ -65,7 +72,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             usernamePasswordAuthenticationToken
                     .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
         }
         chain.doFilter(request, response);
     }
