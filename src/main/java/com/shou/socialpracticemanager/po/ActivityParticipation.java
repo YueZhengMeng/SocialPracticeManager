@@ -3,25 +3,25 @@ package com.shou.socialpracticemanager.po;
 public class ActivityParticipation {
     private int activityParticipationID;
     private int activityID;
-    private int userID;
+    private int groupID;
     private String finishTime;
     private int state;
 
     public ActivityParticipation() {
     }
 
-    public ActivityParticipation(int activityParticipationID, int activityID, int userID, String finishTime, int state) {
+    public ActivityParticipation(int activityParticipationID, int activityID, int groupID, String finishTime, int state) {
         this.activityParticipationID = activityParticipationID;
         this.activityID = activityID;
-        this.userID = userID;
+        this.groupID = groupID;
         this.finishTime = finishTime;
         this.state = state;
     }
 
-    public ActivityParticipation(int activityID, int userID) {
+    public ActivityParticipation(int activityID, int groupID) {
         this.activityParticipationID = 0;
         this.activityID = activityID;
-        this.userID = userID;
+        this.groupID = groupID;
         this.finishTime = null;
         this.state = 0;
     }
@@ -42,12 +42,12 @@ public class ActivityParticipation {
         this.activityID = activityID;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getGroupID() {
+        return groupID;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setGroupID(int groupID) {
+        this.groupID = groupID;
     }
 
     public String getFinishTime() {

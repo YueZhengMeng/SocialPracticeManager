@@ -28,25 +28,4 @@ public class UserService {
     public User getUserByName(String username) {
         return userDao.selectUserByName(username);
     }
-
-    public JwtUserDetail getLoginUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            if (authentication instanceof AnonymousAuthenticationToken) {
-                return null;
-            }
-            if (authentication instanceof UsernamePasswordAuthenticationToken) {
-                return (JwtUserDetail) (authentication.getPrincipal());
-            }
-        }
-        return null;
-    }
-
-    public int getLoginUserId() {
-        return getLoginUser().getUserid();
-    }
-
-    public String getLoginUserName() {
-        return getLoginUser().getUsername();
-    }
 }

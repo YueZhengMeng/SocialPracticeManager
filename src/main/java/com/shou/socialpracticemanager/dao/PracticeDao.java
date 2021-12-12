@@ -15,18 +15,18 @@ public interface PracticeDao {
     @Select("select * from practice where practiceID=#{practiceID}")
     Practice selectPracticeByID(int practiceID);
 
-    @Select("select * from practice where practiceName=#{practiceName}")
-    Practice selectPracticeByName(String practiceName);
+    @Select("select * from practice where practiceName=#{practiceName} and startTime = #{startTime}")
+    Practice selectPracticeByNameAndStartTime(Practice practice);
 
     @Insert("insert into practice(practiceName,startTime) values(#{practiceName},#{startTime})")
-    void addPractice(Practice practice);
+    int addPractice(Practice practice);
 
     @Update("update practice set endTime = #{endTime},state = 1 where practiceID = #{practiceID}")
-    void endPractice(Practice practice);
+    int endPractice(Practice practice);
 
     @Update("update practice set practiceName = #{practiceName} where practiceID = #{practiceID}")
-    void updatePractice(Practice practice);
+    int updatePractice(Practice practice);
 
     @Delete("delete from practice where practiceID = #{practiceID}")
-    void deletePractice(int practiceID);
+    int deletePractice(int practiceID);
 }

@@ -9,24 +9,36 @@ import java.util.List;
 @Repository
 @Mapper
 public interface GroupDao {
-    @Select("select * from group")
+
+    //group是mysql保留字段，sql语句中不能直接使用，要加socialpracticemanager.前缀
+
+    @Select("select * from socialpracticemanager.group")
     List<Group> selectAllGroup();
 
-    @Select("select * from group where groupID=#{groupID}")
+    @Select("select * from socialpracticemanager.group where groupID=#{groupID}")
     Group selectGroupByID(int groupID);
 
-    @Select("select * from group where groupName=#{groupName}")
+    @Select("select * from socialpracticemanager.group where groupName=#{groupName}")
     Group selectGroupByName(String groupName);
 
-    @Select("select * from group where practiceID=#{practiceID}")
+    @Select("select * from socialpracticemanager.group where groupName=#{groupName} and practiceID=#{practiceID}")
+    Group selectGroupByNameAndPracticeID(String groupName,int practiceID);
+
+    @Select("select * from socialpracticemanager.group where practiceID=#{practiceID}")
     List<Group> selectGroupByPracticeID(int practiceID);
 
-    @Insert("insert into group(groupName,practiceID) values(#{groupName},#{practiceID})")
-    void addGroup(Group group);
+    @Select("select * from socialpracticemanager.group where userID = #{userID}")
+    Group selectGroupByUserID(int userID);
 
-    @Update("update Group set groupName = #{groupName} where groupID = #{groupID}")
-    void updateGroup(Group group);
+    @Select("select * from socialpracticemanager.group where practiceID=#{practiceID} and userID = #{userID}")
+    Group selectGroupByPracticeIDAndUserID(int practiceID,int userID);
 
-    @Delete("delete from group where groupID = #{groupID}")
-    void deleteGroup(int groupID);
+    @Insert("insert into socialpracticemanager.group(groupName,practiceID) values(#{groupName},#{practiceID})")
+    int addGroup(Group group);
+
+    @Update("update socialpracticemanager.group set groupName = #{groupName} where groupID = #{groupID}")
+    int updateGroup(Group group);
+
+    @Delete("delete from socialpracticemanager.group where groupID = #{groupID}")
+    int deleteGroup(int groupID);
 }

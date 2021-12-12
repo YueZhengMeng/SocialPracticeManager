@@ -19,11 +19,11 @@ public interface UserDao {
     User selectUserByName(String username);
 
     @Insert("insert into user(username,password) values(#{username},#{password})")
-    void addUser(User user);
+    int addUser(User user);
 
     @Update("update user set username = #{username},password = #{password},role = #{role} where userID = #{userID}")
-    void updateUser(User user);
+    int updateUser(User user);
 
     @Delete("delete from user where userID = #{userID}")
-    void deleteUser(int userID);
+    int deleteUser(int userID);
 }

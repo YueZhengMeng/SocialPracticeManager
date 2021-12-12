@@ -56,14 +56,14 @@ DROP TABLE IF EXISTS `activityparticipation`;
 CREATE TABLE `activityparticipation` (
   `activityParticipationID` int NOT NULL AUTO_INCREMENT,
   `activityID` int NOT NULL,
-  `userID` int NOT NULL,
+  `groupID` int NOT NULL,
   `finishTime` datetime DEFAULT NULL,
   `state` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`activityParticipationID`),
   KEY `activityID_idx` (`activityID`),
-  KEY `userID_idx` (`userID`),
+  KEY `groupID_idx` (`groupID`),
   CONSTRAINT `activityID` FOREIGN KEY (`activityID`) REFERENCES `activity` (`activityID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `userID_a` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `groupID_a` FOREIGN KEY (`groupID`) REFERENCES `group` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -90,7 +90,7 @@ CREATE TABLE `group` (
   PRIMARY KEY (`groupID`),
   KEY `practiceID_idx` (`practiceID`),
   CONSTRAINT `practiceID` FOREIGN KEY (`practiceID`) REFERENCES `practice` (`practiceID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -118,7 +118,7 @@ CREATE TABLE `groupparticipation` (
   KEY `userID_idx` (`userID`),
   CONSTRAINT `groupID` FOREIGN KEY (`groupID`) REFERENCES `group` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `userID` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -144,7 +144,7 @@ CREATE TABLE `practice` (
   `endTime` datetime DEFAULT NULL,
   `state` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`practiceID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,14 +182,6 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES (1,'admin','admin','admin'),(2,'pwb','pwb','student'),(3,'zhj','zhj','teacher');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'socialpracticemanager'
---
-
---
--- Dumping routines for database 'socialpracticemanager'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -200,4 +192,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-12 18:57:36
+-- Dump completed on 2021-12-13  0:28:52

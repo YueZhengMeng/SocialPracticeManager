@@ -22,14 +22,14 @@ public interface ActivityDao {
     List<Activity> selectActivityByPracticeID(int practiceID);
 
     @Insert("insert into activity(activityName,practiceID,startTime) values(#{activityName},#{practiceID},#{startTime})")
-    void addActivity(Activity activity);
+    int addActivity(Activity activity);
 
     @Update("update activity set endTime = #{endTime},state = 1 where activityID = #{activityID}")
-    void endActivity(Activity activity);
+    int endActivity(Activity activity);
 
     @Update("update activity set activityName = #{activityName} where activityID = #{activityID}")
-    void updateActivity(Activity activity);
+    int updateActivity(Activity activity);
 
     @Delete("delete from activity where activityID = #{activityID}")
-    void deleteActivity(int activityID);
+    int deleteActivity(int activityID);
 }

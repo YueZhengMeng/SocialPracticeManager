@@ -3,8 +3,12 @@ package com.shou.socialpracticemanager.security;
 import com.shou.socialpracticemanager.dao.UserDao;
 import com.shou.socialpracticemanager.po.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,6 +34,27 @@ public class JwtUserDetailsService implements UserDetailsService {
         } else {
             throw new UsernameNotFoundException("该用户名不存在: " + username);
         }
+    }
+
+    public JwtUserDetail getLoginUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            if (authentication instanceof AnonymousAuthenticationToken) {
+                return null;
+            }
+            if (authentication instanceof UsernamePasswordAuthenticationToken) {
+                return (JwtUserDetail) (authentication.getPrincipal());
+            }
+        }
+        return null;
+    }
+
+    public int getLoginUserId() {
+        return getLoginUser().getUserid();
+    }
+
+    public String getLoginUserName() {
+        return getLoginUser().getUsername();
     }
 
 }

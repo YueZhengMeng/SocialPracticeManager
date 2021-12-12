@@ -18,18 +18,18 @@ public interface GroupParticipationDao {
     @Select("select * from groupParticipation where groupID=#{groupID}")
     List<GroupParticipation> selectGroupParticipationByGroupID(int groupID);
 
-    @Select("select * from groupParticipation where practiceID=#{practiceID}")
-    List<GroupParticipation> selectGroupParticipationByPracticeID(int practiceID);
+    @Select("select * from groupParticipation where userID=#{userID}")
+    List<GroupParticipation> selectGroupParticipationByUserID(int userID);
 
-    @Insert("insert into groupParticipation(groupID,practiceID) values(#{groupID},#{practiceID})")
-    void addGroupParticipation(GroupParticipation groupParticipation);
+    @Insert("insert into groupParticipation(groupID,userID) values(#{groupID},#{userID})")
+    int addGroupParticipation(GroupParticipation groupParticipation);
 
     @Delete("delete from groupParticipation where groupParticipationID = #{groupParticipationID}")
-    void deleteGroupParticipation(int groupParticipationID);
+    int deleteGroupParticipation(int groupParticipationID);
 
     @Delete("delete from groupParticipation where groupID = #{groupID}")
-    void deleteGroupParticipationByGroupID(int groupID);
+    int deleteGroupParticipationByGroupID(int groupID);
 
-    @Delete("delete from groupParticipation where practiceID = #{practiceID}")
-    void deleteGroupParticipationByPracticeID(int practiceID);
+    @Delete("delete from groupParticipation where groupID = #{groupID} and userID = #{userID}")
+    int deleteGroupParticipationByGroupIDAndUserID(int groupID,int userID);
 }

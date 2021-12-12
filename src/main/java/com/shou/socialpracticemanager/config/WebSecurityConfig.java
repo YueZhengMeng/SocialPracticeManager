@@ -69,8 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
 
         httpSecurity
-                .logout()//默认注销行为为logout
-                .logoutUrl("/api/logout")
+                .logout()
+                .logoutUrl("/api/logout/open")///这个接口没有用
                 .logoutSuccessHandler(logoutAuthenticationSuccessHandler)
                 .permitAll();
 
