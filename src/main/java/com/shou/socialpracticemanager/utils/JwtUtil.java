@@ -1,4 +1,4 @@
-package com.shou.socialpracticemanager.Utils;
+package com.shou.socialpracticemanager.utils;
 
 
 import com.auth0.jwt.JWT;
@@ -14,15 +14,15 @@ import java.util.Calendar;
 
 @Component
 public class JwtUtil {
-    private static final String salt = "19512151959234";
+    private static final String salt = "1951215&1959231&1959234";
 
     public static String generateToken(Authentication authentication)
     {
         JwtUserDetail jwtUserDetail = (JwtUserDetail) (authentication.getPrincipal());
-        int userid = jwtUserDetail.getUserid();
+        int userID = jwtUserDetail.getUserid();
         String username = jwtUserDetail.getUsername();
         JWTCreator.Builder builder = JWT.create();
-        builder.withClaim("userid", userid);
+        builder.withClaim("userID", userID);
         builder.withClaim("username",username);
         Calendar instance = Calendar.getInstance();
         instance.add(Calendar.HOUR, 24);
@@ -41,6 +41,6 @@ public class JwtUtil {
 
     public static int getUserIdFromToken(String token) {
         DecodedJWT decodedJWT = verify(token);
-        return decodedJWT.getClaims().get("userid").asInt();
+        return decodedJWT.getClaims().get("userID").asInt();
     }
 }

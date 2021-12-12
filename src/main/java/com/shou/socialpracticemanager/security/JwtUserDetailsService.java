@@ -26,7 +26,7 @@ public class JwtUserDetailsService implements UserDetailsService {
             String role = user.getRole();
             Collection<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
-            return new JwtUserDetail(user.getUserid(),user.getUsername(), user.getPassword(),authorities);
+            return new JwtUserDetail(user.getUserID(),user.getUsername(), user.getPassword(),authorities);
         } else {
             throw new UsernameNotFoundException("该用户名不存在: " + username);
         }

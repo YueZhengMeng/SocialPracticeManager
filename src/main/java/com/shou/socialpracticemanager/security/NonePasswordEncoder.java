@@ -1,4 +1,4 @@
-package com.shou.socialpracticemanager.Utils;
+package com.shou.socialpracticemanager.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

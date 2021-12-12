@@ -4,7 +4,7 @@ import com.auth0.jwt.exceptions.AlgorithmMismatchException;
 import com.auth0.jwt.exceptions.InvalidClaimException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.shou.socialpracticemanager.Utils.JwtUtil;
+import com.shou.socialpracticemanager.utils.JwtUtil;
 import com.shou.socialpracticemanager.security.handler.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -34,6 +34,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
+        //不需要token的api以"/open"结尾,会被该过滤器跳过
         if (request.getRequestURI().endsWith("/open"))
         {
             chain.doFilter(request, response);

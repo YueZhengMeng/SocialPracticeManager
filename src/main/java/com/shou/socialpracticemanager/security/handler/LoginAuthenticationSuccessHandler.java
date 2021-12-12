@@ -2,7 +2,7 @@ package com.shou.socialpracticemanager.security.handler;
 
 
 import com.alibaba.fastjson.JSON;
-import com.shou.socialpracticemanager.Utils.JwtUtil;
+import com.shou.socialpracticemanager.utils.JwtUtil;
 import com.shou.socialpracticemanager.dto.JwtResponseMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

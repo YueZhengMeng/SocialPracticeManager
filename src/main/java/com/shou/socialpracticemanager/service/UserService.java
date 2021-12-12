@@ -21,8 +21,8 @@ public class UserService {
         return userDao.selectAllUser();
     }
 
-    User getUserById(String userid) {
-        return userDao.selectUserById(userid);
+    User getUserById(String userID) {
+        return userDao.selectUserByID(userID);
     }
 
     public User getUserByName(String username) {
