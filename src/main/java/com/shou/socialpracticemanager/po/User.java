@@ -1,7 +1,7 @@
 package com.shou.socialpracticemanager.po;
 
 public class User {
-    private int userid;
+    private int userID;
     private String username;
     private String password;
     private String role;
@@ -9,19 +9,24 @@ public class User {
     public User() {
     }
 
-    public User(int userid, String username, String password, String role) {
-        this.userid = userid;
+    public User(int userID, String username, String password, String role) {
+        this.userID = userID;
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
-    public int getUserid() {
-        return userid;
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public void setUserid(int userid) {
-        this.userid = userid;
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public String getUsername() {
