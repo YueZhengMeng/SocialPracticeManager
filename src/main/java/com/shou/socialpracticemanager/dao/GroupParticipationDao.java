@@ -1,5 +1,6 @@
 package com.shou.socialpracticemanager.dao;
 
+import com.shou.socialpracticemanager.po.Group;
 import com.shou.socialpracticemanager.po.GroupParticipation;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -32,4 +33,7 @@ public interface GroupParticipationDao {
 
     @Delete("delete from groupParticipation where groupID = #{groupID} and userID = #{userID}")
     int deleteGroupParticipationByGroupIDAndUserID(int groupID,int userID);
+
+    @Select("select * from groupParticipation where activityID=#{activityID}")
+    List<GroupParticipation> selectGroupParticipationByActivityID(int activityID);
 }

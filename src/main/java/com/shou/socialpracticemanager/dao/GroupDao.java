@@ -28,7 +28,7 @@ public interface GroupDao {
     List<Group> selectGroupByPracticeID(int practiceID);
 
     @Select("select * from socialpracticemanager.group where userID = #{userID}")
-    Group selectGroupByUserID(int userID);
+    List<Group> selectGroupByUserID(int userID);
 
     @Select("select * from socialpracticemanager.group where practiceID=#{practiceID} and userID = #{userID}")
     Group selectGroupByPracticeIDAndUserID(int practiceID,int userID);

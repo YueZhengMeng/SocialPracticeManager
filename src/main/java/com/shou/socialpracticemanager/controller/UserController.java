@@ -16,17 +16,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/all/open")
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     List<User> getAllUser()
     {
         return userService.getAllUser();
     }
 
-    @GetMapping("/test")
+    @GetMapping("/byGroupID/{groupID}")
     @ResponseStatus(HttpStatus.OK)
-    String test()
+    List<User> getUserByGroupID(@PathVariable int groupID)
     {
-        return "ok";
+        return userService.getUserByGroupID(groupID);
     }
 }

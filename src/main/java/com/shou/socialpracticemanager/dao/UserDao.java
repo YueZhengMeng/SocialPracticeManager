@@ -13,7 +13,7 @@ public interface UserDao {
     List<User> selectAllUser();
 
     @Select("select * from user where userID=#{userID}")
-    User selectUserByID(String userID);
+    User selectUserByID(int userID);
 
     @Select("select * from user where username=#{username}")
     User selectUserByName(String username);

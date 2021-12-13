@@ -7,6 +7,7 @@ import com.shou.socialpracticemanager.po.Group;
 import com.shou.socialpracticemanager.po.GroupParticipation;
 import com.shou.socialpracticemanager.po.Practice;
 import com.shou.socialpracticemanager.security.JwtUserDetailsService;
+import com.shou.socialpracticemanager.utils.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,11 @@ public class PracticeService {
 
     @Autowired
     private GroupDao groupDao;
+
+    public List<Practice> getAllPractice()
+    {
+        return practiceDao.selectAllPractice();
+    }
 
     public int creatPractice(String practiceName) {
         Practice practice = new Practice(practiceName);
@@ -68,5 +74,20 @@ public class PracticeService {
         int userID = jwtUserDetailsService.getLoginUserId();
         GroupParticipation groupParticipation = new GroupParticipation(groupID, userID);
         return groupParticipationDao.addGroupParticipation(groupParticipation);
+    }
+
+    public int endPractice(int practiceID)
+    {
+        Practice practice = practiceDao.selectPracticeByID(practiceID);
+        practice.setEndTime(DateTimeUtil.getSystemTime());
+        return practiceDao.endPractice(practice);
+    }
+
+    public int renamePractice(Practice practice) {
+        return practiceDao.updatePractice(practice);
+    }
+
+    public int deletePractice(int practiceID) {
+        return practiceDao.deletePractice(practiceID);
     }
 }
