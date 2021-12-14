@@ -34,13 +34,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        //不需要token的api以"/open"结尾,会被该过滤器跳过
-        if (request.getRequestURI().endsWith("/open"))
-        {
-            chain.doFilter(request, response);
-            return;
-        }
-
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
@@ -50,20 +43,26 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (SignatureVerificationException e) {
                 SecurityContextHolder.clearContext();
                 jwtAuthenticationEntryPoint.commence(request, response, new BadCredentialsException("签名错误"));
+                return; //结束过滤器链，以下作用相同
             } catch (AlgorithmMismatchException e) {
                 SecurityContextHolder.clearContext();
                 jwtAuthenticationEntryPoint.commence(request, response, new BadCredentialsException("算法不匹配"));
+                return;
             } catch (TokenExpiredException e) {
                 SecurityContextHolder.clearContext();
                 jwtAuthenticationEntryPoint.commence(request, response, new BadCredentialsException("Token过期"));
+                return;
             } catch (InvalidClaimException e) {
                 SecurityContextHolder.clearContext();
                 jwtAuthenticationEntryPoint.commence(request, response, new BadCredentialsException("载荷错误"));
+                return;
             }
-        } else {
-            SecurityContextHolder.clearContext();
-            jwtAuthenticationEntryPoint.commence(request, response, new BadCredentialsException("没有Bearer 开头的Token"));
         }
+        /*else {
+            //这种情况不要终结过滤器链
+            //否则会严重影响静态资源
+            logger.warn("JWT Token does not begin with Bearer String");
+        }*/
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 

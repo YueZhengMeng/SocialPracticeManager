@@ -1,7 +1,5 @@
 package com.shou.socialpracticemanager.security.handler;
 
-
-import com.alibaba.fastjson.JSON;
 import com.shou.socialpracticemanager.dto.JwtResponseMessage;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -17,8 +15,9 @@ public class LoginAuthenticationFailureHandler implements AuthenticationFailureH
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+        httpServletResponse.setContentType("application/json;charset=utf-8");
         Writer writer= new PrintWriter(new OutputStreamWriter(httpServletResponse.getOutputStream()),true);
-        writer.write(JSON.toJSONString(JwtResponseMessage.result(ResultEnum.USER_LOGIN_FAILED)));
+        writer.write(JwtResponseMessage.result(ResultEnum.USER_LOGIN_FAILED));
         writer.flush();
     }
 

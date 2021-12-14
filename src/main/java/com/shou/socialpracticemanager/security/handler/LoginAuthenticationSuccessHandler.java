@@ -1,7 +1,5 @@
 package com.shou.socialpracticemanager.security.handler;
 
-
-import com.alibaba.fastjson.JSON;
 import com.shou.socialpracticemanager.utils.JwtUtil;
 import com.shou.socialpracticemanager.dto.JwtResponseMessage;
 import org.springframework.security.core.Authentication;
@@ -19,9 +17,10 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+        httpServletResponse.setContentType("application/json;charset=utf-8");
         String jwtToken = JwtUtil.generateToken(authentication);
         Writer writer= new PrintWriter(new OutputStreamWriter(httpServletResponse.getOutputStream()),true);
-        writer.write(JSON.toJSONString(JwtResponseMessage.LoginSuccess(ResultEnum.USER_LOGIN_SUCCESS,jwtToken)));
+        writer.write(JwtResponseMessage.LoginSuccess(ResultEnum.USER_LOGIN_SUCCESS,jwtToken));
         writer.flush();
     }
 }

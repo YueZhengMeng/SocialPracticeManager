@@ -1,7 +1,5 @@
 package com.shou.socialpracticemanager.security.handler;
 
-
-import com.alibaba.fastjson.JSON;
 import com.shou.socialpracticemanager.dto.JwtResponseMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -19,8 +17,9 @@ import java.io.Writer;
 public class LogoutAuthenticationSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+        httpServletResponse.setContentType("application/json;charset=utf-8");
         Writer writer= new PrintWriter(new OutputStreamWriter(httpServletResponse.getOutputStream()),true);
-        writer.write(JSON.toJSONString(JwtResponseMessage.result(ResultEnum.USER_LOGOUT_SUCCESS)));
+        writer.write(JwtResponseMessage.result(ResultEnum.USER_LOGOUT_SUCCESS));
         writer.flush();
     }
 
