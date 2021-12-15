@@ -36,4 +36,7 @@ public interface ActivityParticipationDao {
 
     @Delete("delete from activityParticipation where groupID = #{groupID}")
     int deleteActivityParticipationByPracticeID(int groupID);
+
+    @Select("select * from activityParticipation where activityID=#{activityID} and groupID=#{groupID}")
+    ActivityParticipation deleteActivityParticipationByActivityIDAndGroupID(ActivityParticipation activityParticipation);
 }

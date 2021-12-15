@@ -42,10 +42,18 @@ public class ActivityController {
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "某个Group加入某个Activity",notes = "通用 \n activityID和groupID 必须\n通用")
+    @ApiOperation(value = "某个Group加入某个Activity",notes = "activityID和groupID 必须\n通用")
     public int joinActivity(@RequestBody ActivityParticipation activityParticipation)
     {
         return activityService.joinActivity(activityParticipation);
+    }
+
+    @PostMapping("/state")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "某个Group完成某个Activity的情况",notes = "activityID和groupID 必须\n通用")
+    public ActivityParticipation getActivityState(@RequestBody ActivityParticipation activityParticipation)
+    {
+        return activityService.getActivityState(activityParticipation);
     }
 
     @PutMapping(value = "/end/{activityID}")

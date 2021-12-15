@@ -60,4 +60,8 @@ public class ActivityService {
     public int deleteActivity(int activityID) {
         return activityDao.deleteActivity(activityID);
     }
+
+    public ActivityParticipation getActivityState(ActivityParticipation activityParticipation) {
+        return activityParticipationDao.deleteActivityParticipationByActivityIDAndGroupID(activityParticipation);
+    }
 }
