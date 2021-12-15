@@ -65,12 +65,10 @@ public class PracticeService {
         return myPractice;
     }
 
-    public int joinPractice(int practiceID,String groupName)
+    public int joinPractice(Group group)
     {
-        Group group = new Group(groupName, practiceID);
         groupDao.addGroup(group);
-
-        int groupID = groupDao.selectGroupByNameAndPracticeID(groupName, practiceID).getGroupID();
+        int groupID = groupDao.selectGroupByNameAndPracticeID(group.getGroupName(), group.getPracticeID()).getGroupID();
         int userID = jwtUserDetailsService.getLoginUserId();
         GroupParticipation groupParticipation = new GroupParticipation(groupID, userID);
         return groupParticipationDao.addGroupParticipation(groupParticipation);

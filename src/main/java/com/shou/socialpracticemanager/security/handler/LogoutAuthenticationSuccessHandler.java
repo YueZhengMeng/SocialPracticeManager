@@ -18,6 +18,7 @@ public class LogoutAuthenticationSuccessHandler implements LogoutSuccessHandler 
     @Override
     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         httpServletResponse.setContentType("application/json;charset=utf-8");
+        httpServletResponse.setStatus(ResultEnum.USER_LOGOUT_SUCCESS.getCode());
         Writer writer= new PrintWriter(new OutputStreamWriter(httpServletResponse.getOutputStream()),true);
         writer.write(JwtResponseMessage.result(ResultEnum.USER_LOGOUT_SUCCESS));
         writer.flush();

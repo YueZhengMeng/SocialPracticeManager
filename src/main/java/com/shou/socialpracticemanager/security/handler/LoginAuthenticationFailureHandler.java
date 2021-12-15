@@ -16,6 +16,7 @@ public class LoginAuthenticationFailureHandler implements AuthenticationFailureH
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         httpServletResponse.setContentType("application/json;charset=utf-8");
+        httpServletResponse.setStatus(ResultEnum.USER_LOGIN_FAILED.getCode());
         Writer writer= new PrintWriter(new OutputStreamWriter(httpServletResponse.getOutputStream()),true);
         writer.write(JwtResponseMessage.result(ResultEnum.USER_LOGIN_FAILED));
         writer.flush();

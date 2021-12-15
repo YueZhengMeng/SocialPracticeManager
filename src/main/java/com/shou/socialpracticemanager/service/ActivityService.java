@@ -35,15 +35,15 @@ public class ActivityService {
     }
 
 
-    public int createActivity(String activityName, int practiceID) {
-        Activity activity = new Activity(activityName,practiceID);
-        return activityDao.addActivity(activity);
+    public int createActivity(Activity activity) {
+        Activity temp = new Activity(activity.getActivityName(),activity.getPracticeID());
+        return activityDao.addActivity(temp);
     }
 
-    public int joinActivity(int activityID, int groupID)
+    public int joinActivity(ActivityParticipation activityParticipation)
     {
-        ActivityParticipation activityParticipation = new ActivityParticipation(activityID,groupID);
-        return activityParticipationDao.addActivityParticipation(activityParticipation);
+        ActivityParticipation temp = new ActivityParticipation(activityParticipation.getActivityID(),activityParticipation.getGroupID());
+        return activityParticipationDao.addActivityParticipation(temp);
     }
 
     public int endActivity(int activityID)

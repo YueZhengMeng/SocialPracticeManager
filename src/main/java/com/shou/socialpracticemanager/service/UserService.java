@@ -41,4 +41,8 @@ public class UserService {
         }
         return users;
     }
+
+    public int registerUser(User user) {
+        return userDao.addUser(user);
+    }
 }

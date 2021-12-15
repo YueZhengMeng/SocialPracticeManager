@@ -66,14 +66,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         httpSecurity
                 .formLogin()
-                .loginProcessingUrl("/api/login/open")
+                .loginProcessingUrl("/api/login")
                 .successHandler(loginAuthenticationSuccessHandler) // 登录成功
                 .failureHandler(loginAuthenticationFailureHandler) // 登录失败
                 .permitAll();
 
         httpSecurity
                 .logout()
-                .logoutUrl("/api/logout/open")///这个接口没有用
+                .logoutUrl("/api/logout")//这个接口没有用
                 .logoutSuccessHandler(logoutAuthenticationSuccessHandler)
                 .permitAll();
 
