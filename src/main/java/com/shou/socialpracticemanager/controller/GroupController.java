@@ -20,7 +20,7 @@ public class GroupController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "获取所有Group信息",notes = "管理员用")
+    @ApiOperation(value = "获取所有Group信息",notes = "所有权限")
     public List<Group> getAllGroup()
     {
         return groupService.getAllGroup();
@@ -28,7 +28,7 @@ public class GroupController {
 
     @GetMapping("/ByPracticeID/{practiceID}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "获取某个Practice拥有的Group的信息",notes = "通用")
+    @ApiOperation(value = "获取某个Practice拥有的Group的信息",notes = "所有权限")
     public List<Group> getGroupByPracticeID(@PathVariable int practiceID)
     {
         return groupService.getGroupByPracticeID(practiceID);
@@ -36,7 +36,7 @@ public class GroupController {
 
     @GetMapping("/teacherGroup/{practiceID}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "获取某个Practice的教师Group的信息",notes = "通用")
+    @ApiOperation(value = "获取某个Practice的教师Group的信息",notes = "所有权限")
     public Group getTeacherGroup(@PathVariable int practiceID)
     {
         return groupService.getTeacherGroup(practiceID);
@@ -44,7 +44,7 @@ public class GroupController {
 
     @GetMapping("/ByActivityID/{activityID}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "获取参与了某个Activity的Group信息",notes = "通用")
+    @ApiOperation(value = "获取参与了某个Activity的Group信息",notes = "所有权限")
     public List<Group> getGroupByActivityID(@PathVariable int activityID)
     {
         return groupService.getGroupByActivityID(activityID);
@@ -52,7 +52,7 @@ public class GroupController {
 
     @GetMapping("/my")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "获取当前用户的Group信息",notes = "通用")
+    @ApiOperation(value = "获取当前用户的Group信息",notes = "所有权限")
     public List<Group> getMyGroup()
     {
         return groupService.getMyGroup();
@@ -60,14 +60,14 @@ public class GroupController {
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "当前用户加入某个Group",notes = "通用")
+    @ApiOperation(value = "当前用户加入某个Group",notes = "所有权限")
     int joinGroup(@RequestBody int groupID) {
         return groupService.joinGroup(groupID);
     }
 
     @DeleteMapping("/{groupID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "当前用户离开某个Group",notes = "通用")
+    @ApiOperation(value = "当前用户离开某个Group",notes = "所有权限")
     int leaveGroup(@PathVariable int groupID)
     {
         return groupService.leaveGroup(groupID);

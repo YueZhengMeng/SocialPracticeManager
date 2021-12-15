@@ -20,7 +20,7 @@ public class PracticeController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "获取所有Practice信息",notes = "管理员用")
+    @ApiOperation(value = "获取所有Practice信息",notes = "所有权限")
     public List<Practice> getAllPractice()
     {
         return practiceService.getAllPractice();
@@ -28,7 +28,7 @@ public class PracticeController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "创建一个Practice",notes = "教师使用")
+    @ApiOperation(value = "创建一个Practice",notes = "教师使权限")
     int createPractice(@RequestBody String practiceName)
     {
         return practiceService.creatPractice(practiceName);
@@ -36,7 +36,7 @@ public class PracticeController {
 
     @GetMapping("/my")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "获取当前用户加入的Practice",notes = "通用")
+    @ApiOperation(value = "获取当前用户加入的Practice",notes = "所有权限")
     List<Practice> getMyPractice()
     {
         return practiceService.getMyPractice();
@@ -44,7 +44,7 @@ public class PracticeController {
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "加入一个Practice",notes = "practiceID和GroupID必须\n在practiceID对应的Practice下\n新建一个名为groupName的组\n组内只有当前用户\n通用")
+    @ApiOperation(value = "加入一个Practice",notes = "practiceID和GroupID必须\n在practiceID对应的Practice下\n新建一个名为groupName的组\n组内只有当前用户\n所有权限")
     int joinPractice(@RequestBody Group group)
     {
         return practiceService.joinPractice(group);
@@ -52,7 +52,7 @@ public class PracticeController {
 
     @PutMapping(value = "/end/{practiceID}")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "结束一个Practice",notes = "教师用")
+    @ApiOperation(value = "结束一个Practice",notes = "教师权限")
     int endPractice(@PathVariable int practiceID)
     {
         return practiceService.endPractice(practiceID);
@@ -60,7 +60,7 @@ public class PracticeController {
 
     @PostMapping(value = "/rename")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "重命名一个Practice",notes = "practiceID和practiceName(新) 必须\n教师用")
+    @ApiOperation(value = "重命名一个Practice",notes = "practiceID和practiceName(新) 必须\n教师权限")
     int renamePractice(@RequestBody Practice practice)
     {
         return practiceService.renamePractice(practice);
@@ -68,7 +68,7 @@ public class PracticeController {
 
     @DeleteMapping("/{practiceID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "删除Practice",notes = "教师用")
+    @ApiOperation(value = "删除Practice",notes = "教师权限")
     int deletePractice(@PathVariable int practiceID)
     {
         return practiceService.deletePractice(practiceID);

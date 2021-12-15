@@ -62,6 +62,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/druid/**").permitAll()
                 .antMatchers("/webjars/**", "/static/**").permitAll()
+                .antMatchers("/api/user/register").permitAll()
+                .antMatchers("/api/user/all").hasRole("admin")
+                .antMatchers("/api/practice","/api/practice/end","/api/practice/rename").hasRole("teacher")
+                .antMatchers("/api/activity","/api/activity/end","/api/activity/rename").hasRole("teacher")
                 .anyRequest().authenticated();
 
         httpSecurity
