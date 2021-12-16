@@ -33,6 +33,14 @@ public class UserController {
         return userService.getAllUser();
     }
 
+    @GetMapping("/role")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "获取当前User的role信息",notes = "所有权限")
+    String getMyRole()
+    {
+        return userService.getMyRole();
+    }
+
     @GetMapping("/byGroupID/{groupID}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "查询某Group拥有的用户的信息",notes = "所有权限")
