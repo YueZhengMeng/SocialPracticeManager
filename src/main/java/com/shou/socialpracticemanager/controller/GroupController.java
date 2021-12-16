@@ -67,7 +67,7 @@ public class GroupController {
 
     @DeleteMapping("/{groupID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "当前用户离开某个Group",notes = "所有权限")
+    @ApiOperation(value = "当前用户离开某个Group",notes = "即可退出某个Practice\n 所有权限")
     int leaveGroup(@PathVariable int groupID)
     {
         return groupService.leaveGroup(groupID);

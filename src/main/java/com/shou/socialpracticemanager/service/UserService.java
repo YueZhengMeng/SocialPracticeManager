@@ -4,6 +4,7 @@ import com.shou.socialpracticemanager.dao.GroupParticipationDao;
 import com.shou.socialpracticemanager.dao.UserDao;
 import com.shou.socialpracticemanager.po.GroupParticipation;
 import com.shou.socialpracticemanager.po.User;
+import com.shou.socialpracticemanager.security.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class UserService {
 
     @Autowired
     GroupParticipationDao groupParticipationDao;
+
+    @Autowired
+    JwtUserDetailsService jwtUserDetailsService;
 
     public List<User> getAllUser() {
         return userDao.selectAllUser();
@@ -44,5 +48,10 @@ public class UserService {
 
     public int registerUser(User user) {
         return userDao.addUser(user);
+    }
+
+    public User getMyRole() {
+        int userID = jwtUserDetailsService.getLoginUserId();
+        return userDao.selectUserByID(userID);
     }
 }
