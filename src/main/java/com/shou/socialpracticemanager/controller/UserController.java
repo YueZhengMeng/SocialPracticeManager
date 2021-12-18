@@ -35,7 +35,7 @@ public class UserController {
 
     @GetMapping("/role")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "获取当前User的role信息",notes = "所有权限")
+    @ApiOperation(value = "获取当前User的所有信息",notes = "主要用于获取role信息\n所有权限")
     User getMyRole()
     {
         return userService.getMyRole();

@@ -33,6 +33,10 @@ public class GroupService {
     @Autowired
     UserService userService;
 
+    public int renameGroup(Group group) {
+        return groupDao.updateGroup(group);
+    }
+
     public List<Group> getAllGroup()
     {
         return groupDao.selectAllGroup();

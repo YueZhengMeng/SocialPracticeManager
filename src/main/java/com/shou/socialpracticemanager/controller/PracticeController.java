@@ -28,10 +28,10 @@ public class PracticeController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "创建一个Practice",notes = "教师使权限")
-    int createPractice(@RequestBody String practiceName)
+    @ApiOperation(value = "创建一个Practice",notes = "只需要practiceName\n教师权限")
+    int createPractice(@RequestBody Practice practice)
     {
-        return practiceService.creatPractice(practiceName);
+        return practiceService.creatPractice(practice.getPracticeName());
     }
 
     @GetMapping("/my")
@@ -44,7 +44,7 @@ public class PracticeController {
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "加入一个Practice",notes = "practiceID和GroupID必须\n在practiceID对应的Practice下\n新建一个名为groupName的组\n组内只有当前用户\n所有权限")
+    @ApiOperation(value = "加入一个Practice",notes = "只需要practiceID和GroupID\n在practiceID对应的Practice下\n新建一个名为groupName的组\n组内只有当前用户\n所有权限")
     int joinPractice(@RequestBody Group group)
     {
         return practiceService.joinPractice(group);
@@ -60,7 +60,7 @@ public class PracticeController {
 
     @PostMapping(value = "/rename")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "重命名一个Practice",notes = "practiceID和practiceName(新) 必须\n教师权限")
+    @ApiOperation(value = "重命名一个Practice",notes = "只需要practiceID和practiceName(新)\n教师权限")
     int renamePractice(@RequestBody Practice practice)
     {
         return practiceService.renamePractice(practice);

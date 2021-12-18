@@ -26,7 +26,7 @@ public class ActivityController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "新建Activity",notes = "activityName和practiceID 必须\n教师权限")
+    @ApiOperation(value = "新建Activity",notes = "只需要activityName和practiceID\n教师权限")
     public int createActivity(@RequestBody Activity activity)
     {
         return activityService.createActivity(activity);
@@ -42,7 +42,7 @@ public class ActivityController {
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "某个Group加入某个Activity",notes = "activityID和groupID 必须\n所有权限")
+    @ApiOperation(value = "某个Group加入某个Activity",notes = "只需要activityID和groupID\n所有权限")
     public int joinActivity(@RequestBody ActivityParticipation activityParticipation)
     {
         return activityService.joinActivity(activityParticipation);
@@ -50,7 +50,7 @@ public class ActivityController {
 
     @PostMapping("/state")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "某个Group完成某个Activity的情况",notes = "activityID和groupID 必须\n所有权限")
+    @ApiOperation(value = "某个Group完成某个Activity的情况",notes = "只需要activityID和groupID\n所有权限")
     public ActivityParticipation getActivityState(@RequestBody ActivityParticipation activityParticipation)
     {
         return activityService.getActivityState(activityParticipation);
@@ -66,7 +66,7 @@ public class ActivityController {
 
     @PostMapping(value = "/rename")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "重命名一个Activity",notes = "教师权限\n activityID和activityName(新) 必须")
+    @ApiOperation(value = "重命名一个Activity",notes = "只需要activityID和activityName(新)\n权限")
     int renameActivity(@RequestBody Activity activity)
     {
         return activityService.renameActivity(activity);

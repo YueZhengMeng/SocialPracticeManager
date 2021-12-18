@@ -58,16 +58,24 @@ public class GroupController {
         return groupService.getMyGroup();
     }
 
+    @PostMapping(value = "/rename")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "重命名一个Group",notes = "只需要GroupID和GroupName(新)\n所有权限")
+    int renameGroup(@RequestBody Group group)
+    {
+        return groupService.renameGroup(group);
+    }
+
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "当前用户加入某个Group",notes = "所有权限")
-    int joinGroup(@RequestBody int groupID) {
-        return groupService.joinGroup(groupID);
+    @ApiOperation(value = "当前用户加入某个Group",notes = "只需要groupID\n所有权限")
+    int joinGroup(@RequestBody Group group) {
+        return groupService.joinGroup(group.getGroupID());
     }
 
     @DeleteMapping("/{groupID}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "当前用户离开某个Group",notes = "即可退出某个Practice\n 所有权限")
+    @ApiOperation(value = "当前用户离开某个Group",notes = "即退出某个Practice\n所有权限")
     int leaveGroup(@PathVariable int groupID)
     {
         return groupService.leaveGroup(groupID);
