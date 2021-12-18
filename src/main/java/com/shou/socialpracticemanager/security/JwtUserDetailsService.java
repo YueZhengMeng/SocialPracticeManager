@@ -24,7 +24,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     private UserDao userDao;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public JwtUserDetail loadUserByUsername(String username) throws UsernameNotFoundException {
         User user= userDao.selectUserByName(username);
         if (user!=null) {
             String role = user.getRole();

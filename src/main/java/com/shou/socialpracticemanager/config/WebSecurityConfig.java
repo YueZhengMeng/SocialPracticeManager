@@ -24,15 +24,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;//未登陆时返回 JSON 格式的数据给前端（否则为 html）
 
     @Autowired
-    private LoginAuthenticationSuccessHandler loginAuthenticationSuccessHandler; //登录成功返回的 JSON 格式数据给前端（否则为 html）
-
-    @Autowired
-    private LoginAuthenticationFailureHandler loginAuthenticationFailureHandler; //登录失败返回的 JSON 格式数据给前端（否则为 html）
-
-    @Autowired
-    private LogoutAuthenticationSuccessHandler logoutAuthenticationSuccessHandler;//注销成功返回的 JSON 格式数据给前端（否则为 登录时的 html）
-
-    @Autowired
     private AccessAuthenticationDeniedHandler accessAuthenticationDeniedHandler;//无权访问返回的 JSON 格式数据给前端（否则为 403 html 页面）
 
     @Autowired
@@ -40,6 +31,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    private JwtLoginFilter jwtLoginFilter;
 
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -63,23 +57,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/druid/**").permitAll()
                 .antMatchers("/webjars/**", "/static/**").permitAll()
                 .antMatchers("/api/user/register").permitAll()
+                .antMatchers("/api/login").permitAll()
                 .antMatchers("/api/user/all").hasRole("admin")
                 .antMatchers("/api/practice","/api/practice/end","/api/practice/rename").hasRole("teacher")
                 .antMatchers("/api/activity","/api/activity/end","/api/activity/rename").hasRole("teacher")
                 .anyRequest().authenticated();
 
-        httpSecurity
+        /*httpSecurity
                 .formLogin()
                 .loginProcessingUrl("/api/login")
                 .successHandler(loginAuthenticationSuccessHandler) // 登录成功
                 .failureHandler(loginAuthenticationFailureHandler) // 登录失败
-                .permitAll();
+                .permitAll();*/
 
         httpSecurity
+                .formLogin()
+                .disable();
+
+        /*httpSecurity
                 .logout()
                 .logoutUrl("/api/logout")//这个接口没有用
                 .logoutSuccessHandler(logoutAuthenticationSuccessHandler)
-                .permitAll();
+                .permitAll();*/
 
         httpSecurity
                 .httpBasic()
@@ -95,5 +94,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         httpSecurity
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+        httpSecurity
+                .addFilterBefore(jwtLoginFilter, JwtRequestFilter.class);
     }
 }
