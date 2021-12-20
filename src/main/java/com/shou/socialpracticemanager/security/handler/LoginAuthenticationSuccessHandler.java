@@ -1,5 +1,6 @@
 package com.shou.socialpracticemanager.security.handler;
 
+import com.shou.socialpracticemanager.dto.ResultEnum;
 import com.shou.socialpracticemanager.utils.JwtUtil;
 import com.shou.socialpracticemanager.dto.JwtResponseMessage;
 import org.springframework.security.core.Authentication;

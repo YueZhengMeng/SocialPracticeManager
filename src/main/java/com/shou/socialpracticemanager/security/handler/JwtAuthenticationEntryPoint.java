@@ -1,7 +1,7 @@
 package com.shou.socialpracticemanager.security.handler;
 
 import com.shou.socialpracticemanager.dto.JwtResponseMessage;
-import org.springframework.http.HttpStatus;
+import com.shou.socialpracticemanager.dto.ResultEnum;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

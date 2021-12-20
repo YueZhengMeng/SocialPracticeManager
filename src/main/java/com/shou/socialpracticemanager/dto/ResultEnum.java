@@ -1,4 +1,4 @@
-package com.shou.socialpracticemanager.security.handler;
+package com.shou.socialpracticemanager.dto;
 
 public enum ResultEnum {
     SUCCESS(200,"成功"),

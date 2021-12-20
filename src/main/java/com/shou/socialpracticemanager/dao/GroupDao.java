@@ -39,6 +39,9 @@ public interface GroupDao {
     @Update("update socialpracticemanager.group set groupName = #{groupName} where groupID = #{groupID}")
     int updateGroup(Group group);
 
+    @Update("update socialpracticemanager.group set score = #{score} where groupID = #{groupID}")
+    int updateGroupScore(Group group);
+
     @Delete("delete from socialpracticemanager.group where groupID = #{groupID}")
     int deleteGroup(int groupID);
 }

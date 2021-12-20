@@ -1,5 +1,6 @@
 package com.shou.socialpracticemanager.controller;
 
+import com.shou.socialpracticemanager.dto.ActivityMessage;
 import com.shou.socialpracticemanager.po.Activity;
 import com.shou.socialpracticemanager.po.ActivityParticipation;
 import com.shou.socialpracticemanager.service.ActivityService;
@@ -20,8 +21,15 @@ public class ActivityController {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "获取所有Activity信息",notes = "所有权限")
-    public List<Activity> getActivityByPracticeId(int practiceID) {
-        return activityService.getActivityByPracticeId(practiceID);
+    public List<ActivityMessage> getAllActivity() {
+        return activityService.getAllActivity();
+    }
+
+    @GetMapping("/my")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "获取当前用户的Activity信息",notes = "所有权限")
+    public List<ActivityMessage> getMyActivity() {
+        return activityService.getMyActivity();
     }
 
     @PostMapping("")
@@ -35,7 +43,7 @@ public class ActivityController {
     @GetMapping("/ByPracticeID/{practiceID}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "获取某个Practice拥有的所有Activity信息",notes = "所有权限")
-    public List<Activity> getActivityByPracticeID(@PathVariable int practiceID)
+    public List<ActivityMessage> getActivityByPracticeID(@PathVariable int practiceID)
     {
         return activityService.getActivityByPracticeID(practiceID);
     }
@@ -64,7 +72,7 @@ public class ActivityController {
         return activityService.endActivity(activityID);
     }
 
-    @PostMapping(value = "/rename")
+    @PutMapping(value = "/rename")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "重命名一个Activity",notes = "只需要activityID和activityName(新)\n权限")
     int renameActivity(@RequestBody Activity activity)

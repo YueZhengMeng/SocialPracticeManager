@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `activity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `activity` (
-  `activityID` int NOT NULL,
+  `activityID` int NOT NULL AUTO_INCREMENT,
   `activityName` varchar(255) NOT NULL,
   `practiceID` int NOT NULL,
   `startTime` datetime NOT NULL,
@@ -87,10 +87,11 @@ CREATE TABLE `group` (
   `groupID` int NOT NULL AUTO_INCREMENT,
   `groupName` varchar(255) NOT NULL,
   `practiceID` int NOT NULL,
+  `score` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`groupID`),
   KEY `practiceID_idx` (`practiceID`),
   CONSTRAINT `practiceID` FOREIGN KEY (`practiceID`) REFERENCES `practice` (`practiceID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -118,7 +119,7 @@ CREATE TABLE `groupparticipation` (
   KEY `userID_idx` (`userID`),
   CONSTRAINT `groupID` FOREIGN KEY (`groupID`) REFERENCES `group` (`groupID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `userID` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -144,7 +145,7 @@ CREATE TABLE `practice` (
   `endTime` datetime DEFAULT NULL,
   `state` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`practiceID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,4 +193,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-13  0:28:52
+-- Dump completed on 2021-12-20 21:02:02

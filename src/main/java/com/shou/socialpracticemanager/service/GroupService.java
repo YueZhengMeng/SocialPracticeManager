@@ -3,9 +3,9 @@ package com.shou.socialpracticemanager.service;
 import com.shou.socialpracticemanager.dao.GroupDao;
 import com.shou.socialpracticemanager.dao.GroupParticipationDao;
 import com.shou.socialpracticemanager.dao.UserDao;
+import com.shou.socialpracticemanager.dto.GroupMessage;
 import com.shou.socialpracticemanager.po.Group;
 import com.shou.socialpracticemanager.po.GroupParticipation;
-import com.shou.socialpracticemanager.po.Practice;
 import com.shou.socialpracticemanager.po.User;
 import com.shou.socialpracticemanager.security.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +37,22 @@ public class GroupService {
         return groupDao.updateGroup(group);
     }
 
-    public List<Group> getAllGroup()
+    public List<GroupMessage> getAllGroup()
     {
-        return groupDao.selectAllGroup();
+        List<Group> allGroup = groupDao.selectAllGroup();
+        List<Integer> allMyGroup = getMyGroup().stream().mapToInt(GroupMessage::getGroupID).boxed().toList();
+        List<GroupMessage> allGroupMessage = new ArrayList<>();
+        for (Group temp : allGroup)
+        {
+            if (allMyGroup.contains(temp.getGroupID()))
+            {
+                allGroupMessage.add(new GroupMessage(temp,1));
+            }
+            else {
+                allGroupMessage.add(new GroupMessage(temp,0));
+            }
+        }
+        return allGroupMessage;
     }
 
     public int joinGroup(int groupID)
@@ -61,9 +74,14 @@ public class GroupService {
         }
     }
 
-    public List<Group> getMyGroup() {
+    public List<GroupMessage> getMyGroup() {
         int userID = jwtUserDetailsService.getLoginUserId();
-        return groupDao.selectGroupByUserID(userID);
+        List<Group> groups = groupDao.selectGroupByUserID(userID);
+        List<GroupMessage> groupMessage = new ArrayList<>();
+        for (Group group : groups) {
+            groupMessage.add(new GroupMessage(group,1));
+        }
+        return groupMessage;
     }
 
     public List<Group> getGroupByPracticeID(int practiceID) {
@@ -81,15 +99,28 @@ public class GroupService {
         return groups;
     }
 
-    public Group getTeacherGroup(int practiceID)
+    public GroupMessage getTeacherGroup(int practiceID)
     {
         List<Group> groups = groupDao.selectGroupByPracticeID(practiceID);
         for (Group group : groups) {
             List<User> users = userService.getUserByGroupID(group.getGroupID());
             if (users != null && users.size() > 0 && users.get(0).getRole().equals("teacher")) {
-                return group;
+                int userID = jwtUserDetailsService.getLoginUserId();
+                List<Integer> userIDs = users.stream().mapToInt(User ::getUserID).boxed().toList();
+                if (userIDs.contains(userID))
+                {
+                    return new GroupMessage(group,1);
+                }
+                else {
+                    return new GroupMessage(group,0);
+                }
             }
         }
         return null;
+    }
+
+    public int setGroupScore(Group group)
+    {
+        return groupDao.updateGroupScore(group);
     }
 }

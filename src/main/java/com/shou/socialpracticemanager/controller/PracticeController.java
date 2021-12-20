@@ -1,5 +1,6 @@
 package com.shou.socialpracticemanager.controller;
 
+import com.shou.socialpracticemanager.dto.PracticeMessage;
 import com.shou.socialpracticemanager.po.Group;
 import com.shou.socialpracticemanager.po.Practice;
 import com.shou.socialpracticemanager.service.PracticeService;
@@ -21,7 +22,7 @@ public class PracticeController {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "获取所有Practice信息",notes = "所有权限")
-    public List<Practice> getAllPractice()
+    public List<PracticeMessage> getAllPractice()
     {
         return practiceService.getAllPractice();
     }
@@ -37,14 +38,14 @@ public class PracticeController {
     @GetMapping("/my")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "获取当前用户加入的Practice",notes = "所有权限")
-    List<Practice> getMyPractice()
+    List<PracticeMessage> getMyPractice()
     {
         return practiceService.getMyPractice();
     }
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "加入一个Practice",notes = "只需要practiceID和GroupID\n在practiceID对应的Practice下\n新建一个名为groupName的组\n组内只有当前用户\n所有权限")
+    @ApiOperation(value = "加入一个Practice",notes = "只需要practiceID和GroupName\n在practiceID对应的Practice下\n新建一个名为groupName的组\n组内只有当前用户\n所有权限")
     int joinPractice(@RequestBody Group group)
     {
         return practiceService.joinPractice(group);
@@ -58,7 +59,7 @@ public class PracticeController {
         return practiceService.endPractice(practiceID);
     }
 
-    @PostMapping(value = "/rename")
+    @PutMapping(value = "/rename")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "重命名一个Practice",notes = "只需要practiceID和practiceName(新)\n教师权限")
     int renamePractice(@RequestBody Practice practice)

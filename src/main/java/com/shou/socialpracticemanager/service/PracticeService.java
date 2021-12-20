@@ -1,11 +1,8 @@
 package com.shou.socialpracticemanager.service;
 
-import com.shou.socialpracticemanager.dao.GroupDao;
-import com.shou.socialpracticemanager.dao.GroupParticipationDao;
-import com.shou.socialpracticemanager.dao.PracticeDao;
-import com.shou.socialpracticemanager.po.Group;
-import com.shou.socialpracticemanager.po.GroupParticipation;
-import com.shou.socialpracticemanager.po.Practice;
+import com.shou.socialpracticemanager.dao.*;
+import com.shou.socialpracticemanager.dto.PracticeMessage;
+import com.shou.socialpracticemanager.po.*;
 import com.shou.socialpracticemanager.security.JwtUserDetailsService;
 import com.shou.socialpracticemanager.utils.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +27,28 @@ public class PracticeService {
     @Autowired
     private GroupDao groupDao;
 
-    public List<Practice> getAllPractice()
+    @Autowired
+    ActivityDao activityDao;
+
+    @Autowired
+    ActivityParticipationDao activityParticipationDao;
+
+    public List<PracticeMessage> getAllPractice()
     {
-        return practiceDao.selectAllPractice();
+        List<Practice> allPractice = practiceDao.selectAllPractice();
+        List<Integer> myPracticeID = getMyPractice().stream().mapToInt(PracticeMessage::getPracticeID).boxed().toList();
+        List<PracticeMessage> allPracticeMessage = new ArrayList<>();
+        for (Practice practice : allPractice)
+        {
+            if (myPracticeID.contains(practice.getPracticeID()))
+            {
+                allPracticeMessage.add(new PracticeMessage(practice,1));
+            }
+            else {
+                allPracticeMessage.add(new PracticeMessage(practice,0));
+            }
+        }
+        return allPracticeMessage;
     }
 
     public int creatPractice(String practiceName) {
@@ -50,7 +66,7 @@ public class PracticeService {
 
     }
 
-    public List<Practice> getMyPractice() {
+    public List<PracticeMessage> getMyPractice() {
         int userID = jwtUserDetailsService.getLoginUserId();
         List<GroupParticipation> myGroupParticipation = groupParticipationDao.selectGroupParticipationByUserID(userID);
         List<Integer> myGroupID = myGroupParticipation.stream().mapToInt(GroupParticipation::getGroupID).boxed().toList();
@@ -58,9 +74,11 @@ public class PracticeService {
         for (int groupID : myGroupID) {
             myPracticeID.add(groupDao.selectGroupByID(groupID).getPracticeID());
         }
-        List<Practice> myPractice = new ArrayList<>();
+        List<PracticeMessage> myPractice = new ArrayList<>();
         for (int practiceID : myPracticeID) {
-            myPractice.add(practiceDao.selectPracticeByID(practiceID));
+            Practice temp = practiceDao.selectPracticeByID(practiceID);
+            PracticeMessage practiceMessage= new PracticeMessage(temp,1);
+            myPractice.add(practiceMessage);
         }
         return myPractice;
     }
@@ -78,6 +96,16 @@ public class PracticeService {
     {
         Practice practice = practiceDao.selectPracticeByID(practiceID);
         practice.setEndTime(DateTimeUtil.getSystemTime());
+        List<Activity> activities = activityDao.selectActivityByPracticeID(practiceID);
+        for (Activity activity : activities) {
+            int activityID =activity.getActivityID();
+            List<ActivityParticipation> activityParticipations = activityParticipationDao.selectActivityParticipationByActivityID(activityID);
+            for (ActivityParticipation activityParticipation : activityParticipations) {
+                activityParticipationDao.endActivityParticipation(activityParticipation.getActivityParticipationID());
+            }
+            activity.setEndTime(DateTimeUtil.getSystemTime());
+            activityDao.endActivity(activity);
+        }
         return practiceDao.endPractice(practice);
     }
 

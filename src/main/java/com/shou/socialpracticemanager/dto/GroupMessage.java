@@ -1,24 +1,31 @@
-package com.shou.socialpracticemanager.po;
+package com.shou.socialpracticemanager.dto;
 
-public class Group {
+import com.shou.socialpracticemanager.po.Group;
+
+public class GroupMessage {
     private int groupID;
     private String groupName;
     private int practiceID;
     private int score;
+    private int isInside;
 
-    public Group() {
+    public GroupMessage() {
     }
 
-    public Group(String groupName, int practiceID) {
-        this.groupName = groupName;
-        this.practiceID = practiceID;
-    }
-
-    public Group(int groupID, String groupName, int practiceID, int score) {
+    public GroupMessage(int groupID, String groupName, int practiceID, int score, int isInside) {
         this.groupID = groupID;
         this.groupName = groupName;
         this.practiceID = practiceID;
         this.score = score;
+        this.isInside = isInside;
+    }
+
+    public GroupMessage(Group group, int isInside) {
+        this.groupID = group.getGroupID();
+        this.groupName = group.getGroupName();
+        this.practiceID = group.getPracticeID();
+        this.score = group.getScore();
+        this.isInside = isInside;
     }
 
     public int getGroupID() {
@@ -51,5 +58,13 @@ public class Group {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public int getIsInside() {
+        return isInside;
+    }
+
+    public void setIsInside(int isInside) {
+        this.isInside = isInside;
     }
 }

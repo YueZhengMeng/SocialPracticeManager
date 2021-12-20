@@ -3,7 +3,7 @@ package com.shou.socialpracticemanager.dto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shou.socialpracticemanager.security.handler.ResultEnum;
+
 import java.util.HashMap;
 import java.util.Map;
 

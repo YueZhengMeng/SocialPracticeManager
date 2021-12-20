@@ -61,7 +61,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/all").hasRole("admin")
                 .antMatchers("/api/practice","/api/practice/end","/api/practice/rename").hasRole("teacher")
                 .antMatchers("/api/activity","/api/activity/end","/api/activity/rename").hasRole("teacher")
+                .antMatchers("/api/group/score").hasRole("teacher")
                 .anyRequest().authenticated();
+
+        httpSecurity
+                .formLogin()
+                .disable();
 
         /*httpSecurity
                 .formLogin()
@@ -69,10 +74,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(loginAuthenticationSuccessHandler) // 登录成功
                 .failureHandler(loginAuthenticationFailureHandler) // 登录失败
                 .permitAll();*/
-
-        httpSecurity
-                .formLogin()
-                .disable();
 
         /*httpSecurity
                 .logout()

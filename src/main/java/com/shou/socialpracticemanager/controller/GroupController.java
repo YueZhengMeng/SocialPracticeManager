@@ -1,6 +1,7 @@
 package com.shou.socialpracticemanager.controller;
 
 
+import com.shou.socialpracticemanager.dto.GroupMessage;
 import com.shou.socialpracticemanager.po.Group;
 import com.shou.socialpracticemanager.service.GroupService;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +22,7 @@ public class GroupController {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "获取所有Group信息",notes = "所有权限")
-    public List<Group> getAllGroup()
+    public List<GroupMessage> getAllGroup()
     {
         return groupService.getAllGroup();
     }
@@ -37,7 +38,7 @@ public class GroupController {
     @GetMapping("/teacherGroup/{practiceID}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "获取某个Practice的教师Group的信息",notes = "所有权限")
-    public Group getTeacherGroup(@PathVariable int practiceID)
+    public GroupMessage getTeacherGroup(@PathVariable int practiceID)
     {
         return groupService.getTeacherGroup(practiceID);
     }
@@ -53,17 +54,25 @@ public class GroupController {
     @GetMapping("/my")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "获取当前用户的Group信息",notes = "所有权限")
-    public List<Group> getMyGroup()
+    public List<GroupMessage> getMyGroup()
     {
         return groupService.getMyGroup();
     }
 
-    @PostMapping(value = "/rename")
+    @PutMapping(value = "/rename")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "重命名一个Group",notes = "只需要GroupID和GroupName(新)\n所有权限")
     int renameGroup(@RequestBody Group group)
     {
         return groupService.renameGroup(group);
+    }
+
+    @PutMapping(value = "/score")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "为一个Group打分",notes = "只需要GroupID和score\n教师权限")
+    int setGroupScore(@RequestBody Group group)
+    {
+        return groupService.setGroupScore(group);
     }
 
     @PostMapping("/join")

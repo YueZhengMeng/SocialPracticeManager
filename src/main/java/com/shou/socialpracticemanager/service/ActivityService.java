@@ -3,15 +3,18 @@ package com.shou.socialpracticemanager.service;
 
 import com.shou.socialpracticemanager.dao.ActivityDao;
 import com.shou.socialpracticemanager.dao.ActivityParticipationDao;
+import com.shou.socialpracticemanager.dao.GroupDao;
+import com.shou.socialpracticemanager.dto.ActivityMessage;
 import com.shou.socialpracticemanager.po.Activity;
 import com.shou.socialpracticemanager.po.ActivityParticipation;
-import com.shou.socialpracticemanager.po.Practice;
+import com.shou.socialpracticemanager.po.Group;
 import com.shou.socialpracticemanager.security.JwtUserDetailsService;
 import com.shou.socialpracticemanager.utils.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,15 +27,27 @@ public class ActivityService {
     ActivityParticipationDao activityParticipationDao;
 
     @Autowired
-    private JwtUserDetailsService jwtUserDetailsService;
+    JwtUserDetailsService jwtUserDetailsService;
 
-    public List<Activity> getActivityByPracticeID(int practiceID) {
-        return activityDao.selectActivityByPracticeID(practiceID);
+    @Autowired
+    GroupDao groupDao;
+
+    public List<ActivityMessage> getActivityByPracticeID(int practiceID) {
+        List<ActivityMessage> allActivityMessage = new ArrayList<>();
+        List<Integer> myActivityID = getMyActivityID();
+        List<Activity> activities = activityDao.selectActivityByPracticeID(practiceID);
+        for (Activity activity : activities) {
+            if (myActivityID.contains(activity.getActivityID()))
+            {
+                allActivityMessage.add(new ActivityMessage(activity,1));
+            }
+            else {
+                allActivityMessage.add(new ActivityMessage(activity,0));
+            }
+        }
+        return allActivityMessage;
     }
 
-    public List<Activity> getActivityByPracticeId(int practiceID) {
-        return activityDao.selectActivityByPracticeID(practiceID);
-    }
 
 
     public int createActivity(Activity activity) {
@@ -50,6 +65,10 @@ public class ActivityService {
     {
         Activity activity = activityDao.selectActivityByID(activityID);
         activity.setEndTime(DateTimeUtil.getSystemTime());
+        List<ActivityParticipation> activityParticipations = activityParticipationDao.selectActivityParticipationByActivityID(activityID);
+        for (ActivityParticipation activityParticipation : activityParticipations) {
+            activityParticipationDao.endActivityParticipation(activityParticipation.getActivityParticipationID());
+        }
         return activityDao.endActivity(activity);
     }
 
@@ -63,5 +82,46 @@ public class ActivityService {
 
     public ActivityParticipation getActivityState(ActivityParticipation activityParticipation) {
         return activityParticipationDao.deleteActivityParticipationByActivityIDAndGroupID(activityParticipation);
+    }
+
+    public List<Integer> getMyActivityID()
+    {
+        int userID = jwtUserDetailsService.getLoginUserId();
+        List<Integer> myGroupID = groupDao.selectGroupByUserID(userID).stream().mapToInt(Group::getGroupID).boxed().toList();
+        List<Integer> myActivityID = new ArrayList<>();
+        for (int groupID: myGroupID) {
+            List<Integer> activityIDs = activityParticipationDao.selectActivityParticipationByGroupID(groupID)
+                    .stream().mapToInt(ActivityParticipation::getActivityID).boxed().toList();
+            myActivityID.addAll(activityIDs);
+        }
+        return myActivityID;
+    }
+
+    public List<ActivityMessage> getMyActivity()
+    {
+        List<ActivityMessage> myActivity = new ArrayList<>();
+        List<Integer> myActivityID = getMyActivityID();
+        for (int activityID : myActivityID)
+        {
+            Activity activity = activityDao.selectActivityByID(activityID);
+            myActivity.add(new ActivityMessage(activity,1));
+        }
+        return myActivity;
+    }
+
+    public List<ActivityMessage> getAllActivity() {
+        List<ActivityMessage> allActivityMessage = new ArrayList<>();
+        List<Integer> myActivityID = getMyActivityID();
+        List<Activity> activities = activityDao.selectAllActivity();
+        for (Activity activity : activities) {
+            if (myActivityID.contains(activity.getActivityID()))
+            {
+                allActivityMessage.add(new ActivityMessage(activity,1));
+            }
+            else {
+                allActivityMessage.add(new ActivityMessage(activity,0));
+            }
+        }
+        return allActivityMessage;
     }
 }
