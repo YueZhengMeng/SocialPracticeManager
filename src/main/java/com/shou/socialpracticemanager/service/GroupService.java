@@ -76,10 +76,11 @@ public class GroupService {
 
     public List<GroupMessage> getMyGroup() {
         int userID = jwtUserDetailsService.getLoginUserId();
-        List<Group> groups = groupDao.selectGroupByUserID(userID);
+        List<Integer> groupIDs = groupParticipationDao.selectGroupParticipationByUserID(userID)
+                .stream().mapToInt(GroupParticipation::getGroupID).boxed().toList();
         List<GroupMessage> groupMessage = new ArrayList<>();
-        for (Group group : groups) {
-            groupMessage.add(new GroupMessage(group,1));
+        for (Integer groupID : groupIDs) {
+            groupMessage.add(new GroupMessage(groupDao.selectGroupByID(groupID),1));
         }
         return groupMessage;
     }

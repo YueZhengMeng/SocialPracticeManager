@@ -4,10 +4,12 @@ package com.shou.socialpracticemanager.service;
 import com.shou.socialpracticemanager.dao.ActivityDao;
 import com.shou.socialpracticemanager.dao.ActivityParticipationDao;
 import com.shou.socialpracticemanager.dao.GroupDao;
+import com.shou.socialpracticemanager.dao.GroupParticipationDao;
 import com.shou.socialpracticemanager.dto.ActivityMessage;
 import com.shou.socialpracticemanager.po.Activity;
 import com.shou.socialpracticemanager.po.ActivityParticipation;
 import com.shou.socialpracticemanager.po.Group;
+import com.shou.socialpracticemanager.po.GroupParticipation;
 import com.shou.socialpracticemanager.security.JwtUserDetailsService;
 import com.shou.socialpracticemanager.utils.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class ActivityService {
 
     @Autowired
     JwtUserDetailsService jwtUserDetailsService;
+
+    @Autowired
+    GroupParticipationDao groupParticipationDao;
 
     @Autowired
     GroupDao groupDao;
@@ -87,7 +92,8 @@ public class ActivityService {
     public List<Integer> getMyActivityID()
     {
         int userID = jwtUserDetailsService.getLoginUserId();
-        List<Integer> myGroupID = groupDao.selectGroupByUserID(userID).stream().mapToInt(Group::getGroupID).boxed().toList();
+        List<Integer> myGroupID = groupParticipationDao.selectGroupParticipationByUserID(userID)
+                .stream().mapToInt(GroupParticipation::getGroupID).boxed().toList();
         List<Integer> myActivityID = new ArrayList<>();
         for (int groupID: myGroupID) {
             List<Integer> activityIDs = activityParticipationDao.selectActivityParticipationByGroupID(groupID)
