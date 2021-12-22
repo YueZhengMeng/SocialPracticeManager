@@ -1,0 +1,55 @@
+1. 先创建五个数据卷：mysqlData mysqlConf apps nginxHtml nginxConf
+
+2. 创建一个网桥 SPMnet
+
+3. 创建mysql容器，用mysql workbench连接
+docker run -d --name MysqlSPM --network SPMnet --network-alias MysqlSPM -v mysqlData:/var/lib/mysql -v mysqlConf:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=root -p 3307:3306 mysql
+手动执行建库建表格sql语句
+
+4. 创建JDK容器(JRE即可，但我没有找到最新版本)
+docker run -dit --name SPM1 --network SPMnet --network-alias SPM1 -v apps:/usr/apps -p 9001:8080 openjdk
+docker run -dit --name SPM2 --network SPMnet --network-alias SPM2 -v apps:/usr/apps -p 9002:8080 openjdk
+docker run -dit --name SPM3 --network SPMnet --network-alias SPM3 -v apps:/usr/apps -p 9003:8080 openjdk
+将application.properties中数据库url改成 MysqlSPM:3306，手动复制jar包到apps
+docker cp C:\Users\80457\Desktop\SocialPracticeManager.jar SPM1:/apps
+进入容器，手动运行jar包
+cd /usr/apps
+java -jar SocialPracticeManager.jar
+
+5. 创建nginx容器
+docker run -d --name NginxSPM --network SPMnet --network-alias NginxSPM -p 8081:80 -v nginxHtml:/usr/share/nginx/html -v nginxConf:/etc/nginx/conf.d nginx
+复制前端文件到nginxHtml下
+配置文件如下，在nginxConf下
+upstream SPM {
+    server SPM1:8080 weight=1;
+    server SPM2:8080 weight=1;
+    server SPM3:8080 weight=1;
+}
+
+server {
+    listen       9000;
+    listen  [::]:9000;
+    server_name  SPMs;
+
+    location / {
+        proxy_pass http://SPM;
+    }
+
+}
+
+server {
+    listen       80;
+    listen  [::]:80;
+    server_name  localhost;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
+

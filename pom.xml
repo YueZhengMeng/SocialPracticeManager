@@ -64,7 +64,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.shou.socialpracticemanager.SocPraManagerApplication</mainClass>
+                    <mainClass>com.shou.socialpracticemanager.SocialPracticeManagerApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
