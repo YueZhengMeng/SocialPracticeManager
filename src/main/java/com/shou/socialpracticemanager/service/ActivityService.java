@@ -6,6 +6,7 @@ import com.shou.socialpracticemanager.dao.ActivityParticipationDao;
 import com.shou.socialpracticemanager.dao.GroupDao;
 import com.shou.socialpracticemanager.dao.GroupParticipationDao;
 import com.shou.socialpracticemanager.dto.ActivityMessage;
+import com.shou.socialpracticemanager.dto.FinishStateMessage;
 import com.shou.socialpracticemanager.po.Activity;
 import com.shou.socialpracticemanager.po.ActivityParticipation;
 import com.shou.socialpracticemanager.po.Group;
@@ -53,8 +54,6 @@ public class ActivityService {
         return allActivityMessage;
     }
 
-
-
     public int createActivity(Activity activity) {
         Activity temp = new Activity(activity.getActivityName(),activity.getPracticeID());
         return activityDao.addActivity(temp);
@@ -72,7 +71,8 @@ public class ActivityService {
         activity.setEndTime(DateTimeUtil.getSystemTime());
         List<ActivityParticipation> activityParticipations = activityParticipationDao.selectActivityParticipationByActivityID(activityID);
         for (ActivityParticipation activityParticipation : activityParticipations) {
-            activityParticipationDao.endActivityParticipation(activityParticipation.getActivityParticipationID());
+            activityParticipation.setFinishTime(DateTimeUtil.getSystemTime());
+            activityParticipationDao.endActivityParticipation(activityParticipation);
         }
         return activityDao.endActivity(activity);
     }
@@ -85,8 +85,14 @@ public class ActivityService {
         return activityDao.deleteActivity(activityID);
     }
 
-    public ActivityParticipation getActivityState(ActivityParticipation activityParticipation) {
-        return activityParticipationDao.deleteActivityParticipationByActivityIDAndGroupID(activityParticipation);
+    public List<FinishStateMessage> getActivityState(ActivityParticipation activityParticipation) {
+        List<FinishStateMessage> finishStateMessages = new ArrayList<>();
+        List<ActivityParticipation> activityParticipations = activityParticipationDao.selectActivityParticipationByActivityID(activityParticipation.getActivityID());
+        for (ActivityParticipation temp : activityParticipations) {
+            Group group=groupDao.selectGroupByID(temp.getGroupID());
+            finishStateMessages.add(new FinishStateMessage(group,temp));
+        }
+        return finishStateMessages;
     }
 
     public List<Integer> getMyActivityID()
@@ -129,5 +135,11 @@ public class ActivityService {
             }
         }
         return allActivityMessage;
+    }
+
+    public int finishActivity(ActivityParticipation activityParticipation) {
+        ActivityParticipation temp = activityParticipationDao.selectActivityParticipationByActivityIDAndGroupID(activityParticipation);
+        temp.setFinishTime(DateTimeUtil.getSystemTime());
+        return activityParticipationDao.endActivityParticipation(temp);
     }
 }

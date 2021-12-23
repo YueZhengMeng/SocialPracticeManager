@@ -10,33 +10,33 @@ import java.util.List;
 @Repository
 @Mapper
 public interface ActivityParticipationDao {
-    @Select("select * from activityParticipation")
+    @Select("select * from activityparticipation")
     List<ActivityParticipation> selectAllActivityParticipation();
 
-    @Select("select * from activityParticipation where activityParticipationID=#{activityParticipationID}")
+    @Select("select * from activityparticipation where activityParticipationID=#{activityParticipationID}")
     ActivityParticipation selectActivityParticipationByID(int activityParticipationID);
 
-    @Select("select * from activityParticipation where activityID=#{activityID}")
+    @Select("select * from activityparticipation where activityID=#{activityID}")
     List<ActivityParticipation> selectActivityParticipationByActivityID(int activityID);
 
-    @Select("select * from activityParticipation where groupID=#{groupID}")
+    @Select("select * from activityparticipation where groupID=#{groupID}")
     List<ActivityParticipation> selectActivityParticipationByGroupID(int groupID);
 
-    @Insert("insert into activityParticipation(activityID,groupID) values(#{activityID},#{groupID})")
+    @Insert("insert into activityparticipation(activityID,groupID) values(#{activityID},#{groupID})")
     int addActivityParticipation(ActivityParticipation ActivityParticipation);
 
-    @Update("update activityParticipation set finishTime = #{finishTime},state = 0 where activityParticipation = #{activityParticipation}")
-    int endActivityParticipation(int ActivityParticipationID);
+    @Update("update activityparticipation set finishTime = #{finishTime},state = 1 where activityParticipation = #{activityParticipation}")
+    int endActivityParticipation(ActivityParticipation activityParticipation);
 
-    @Delete("delete from activityParticipation where activityParticipationID = #{activityParticipationID}")
+    @Delete("delete from activityparticipation where activityParticipationID = #{activityParticipationID}")
     int deleteActivityParticipation(int ActivityParticipationID);
 
-    @Delete("delete from activityParticipation where activityID = #{activityID}")
+    @Delete("delete from activityparticipation where activityID = #{activityID}")
     int deleteActivityParticipationByGroupID(int activityID);
 
-    @Delete("delete from activityParticipation where groupID = #{groupID}")
+    @Delete("delete from activityparticipation where groupID = #{groupID}")
     int deleteActivityParticipationByPracticeID(int groupID);
 
-    @Select("select * from activityParticipation where activityID=#{activityID} and groupID=#{groupID}")
-    ActivityParticipation deleteActivityParticipationByActivityIDAndGroupID(ActivityParticipation activityParticipation);
+    @Select("select * from activityparticipation where activityID=#{activityID} and groupID=#{groupID}")
+    ActivityParticipation selectActivityParticipationByActivityIDAndGroupID(ActivityParticipation activityParticipation);
 }

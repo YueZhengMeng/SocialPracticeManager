@@ -17,7 +17,7 @@ cd /usr/apps
 java -jar SocialPracticeManager.jar
 
 5. 创建nginx容器
-docker run -d --name NginxSPM --network SPMnet --network-alias NginxSPM -p 8081:80 -v nginxHtml:/usr/share/nginx/html -v nginxConf:/etc/nginx/conf.d nginx
+docker run -d --name NginxSPM --network SPMnet --network-alias NginxSPM -p 8081:80 -p 9000:9000 -v nginxHtml:/usr/share/nginx/html -v nginxConf:/etc/nginx/conf.d nginx
 复制前端文件到nginxHtml下
 配置文件如下，在nginxConf下
 upstream SPM {

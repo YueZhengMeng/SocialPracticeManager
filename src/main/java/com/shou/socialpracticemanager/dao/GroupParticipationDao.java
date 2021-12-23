@@ -10,30 +10,30 @@ import java.util.List;
 @Repository
 @Mapper
 public interface GroupParticipationDao {
-    @Select("select * from groupParticipation")
+    @Select("select * from groupparticipation")
     List<GroupParticipation> selectAllGroupParticipation();
 
-    @Select("select * from groupParticipation where groupParticipationID=#{groupParticipationID}")
+    @Select("select * from groupparticipation where groupParticipationID=#{groupParticipationID}")
     GroupParticipation selectGroupParticipationByID(int groupParticipationID);
 
-    @Select("select * from groupParticipation where groupID=#{groupID}")
+    @Select("select * from groupparticipation where groupID=#{groupID}")
     List<GroupParticipation> selectGroupParticipationByGroupID(int groupID);
 
-    @Select("select * from groupParticipation where userID=#{userID}")
+    @Select("select * from groupparticipation where userID=#{userID}")
     List<GroupParticipation> selectGroupParticipationByUserID(int userID);
 
-    @Insert("insert into groupParticipation(groupID,userID) values(#{groupID},#{userID})")
+    @Insert("insert into groupparticipation(groupID,userID) values(#{groupID},#{userID})")
     int addGroupParticipation(GroupParticipation groupParticipation);
 
-    @Delete("delete from groupParticipation where groupParticipationID = #{groupParticipationID}")
+    @Delete("delete from groupparticipation where groupParticipationID = #{groupParticipationID}")
     int deleteGroupParticipation(int groupParticipationID);
 
-    @Delete("delete from groupParticipation where groupID = #{groupID}")
+    @Delete("delete from groupparticipation where groupID = #{groupID}")
     int deleteGroupParticipationByGroupID(int groupID);
 
-    @Delete("delete from groupParticipation where groupID = #{groupID} and userID = #{userID}")
+    @Delete("delete from groupparticipation where groupID = #{groupID} and userID = #{userID}")
     int deleteGroupParticipationByGroupIDAndUserID(int groupID,int userID);
 
-    @Select("select * from groupParticipation where activityID=#{activityID}")
+    @Select("select * from groupparticipation where activityID=#{activityID}")
     List<GroupParticipation> selectGroupParticipationByActivityID(int activityID);
 }

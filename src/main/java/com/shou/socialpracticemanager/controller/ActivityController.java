@@ -1,6 +1,7 @@
 package com.shou.socialpracticemanager.controller;
 
 import com.shou.socialpracticemanager.dto.ActivityMessage;
+import com.shou.socialpracticemanager.dto.FinishStateMessage;
 import com.shou.socialpracticemanager.po.Activity;
 import com.shou.socialpracticemanager.po.ActivityParticipation;
 import com.shou.socialpracticemanager.service.ActivityService;
@@ -56,12 +57,20 @@ public class ActivityController {
         return activityService.joinActivity(activityParticipation);
     }
 
-    @PostMapping("/state")
+    @PostMapping("/finishState")
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "某个Group完成某个Activity的情况",notes = "只需要activityID和groupID\n所有权限")
-    public ActivityParticipation getActivityState(@RequestBody ActivityParticipation activityParticipation)
+    @ApiOperation(value = "某个Activity的所有Group完成情况",notes = "只需要activityID\n所有权限")
+    public List<FinishStateMessage> getActivityState(@RequestBody ActivityParticipation activityParticipation)
     {
         return activityService.getActivityState(activityParticipation);
+    }
+
+    @PostMapping("/finish")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "某个Group完成一个Activity",notes = "只需要activityID和GroupID\n所有权限")
+    public int finishActivity(@RequestBody ActivityParticipation activityParticipation)
+    {
+        return activityService.finishActivity(activityParticipation);
     }
 
     @PutMapping(value = "/end/{activityID}")

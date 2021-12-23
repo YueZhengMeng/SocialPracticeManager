@@ -101,7 +101,8 @@ public class PracticeService {
             int activityID =activity.getActivityID();
             List<ActivityParticipation> activityParticipations = activityParticipationDao.selectActivityParticipationByActivityID(activityID);
             for (ActivityParticipation activityParticipation : activityParticipations) {
-                activityParticipationDao.endActivityParticipation(activityParticipation.getActivityParticipationID());
+                activityParticipation.setFinishTime(DateTimeUtil.getSystemTime());
+                activityParticipationDao.endActivityParticipation(activityParticipation);
             }
             activity.setEndTime(DateTimeUtil.getSystemTime());
             activityDao.endActivity(activity);
