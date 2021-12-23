@@ -72,7 +72,7 @@ public class ActivityService {
         List<ActivityParticipation> activityParticipations = activityParticipationDao.selectActivityParticipationByActivityID(activityID);
         for (ActivityParticipation activityParticipation : activityParticipations) {
             activityParticipation.setFinishTime(DateTimeUtil.getSystemTime());
-            activityParticipationDao.endActivityParticipation(activityParticipation);
+            activityParticipationDao.finishActivityParticipation(activityParticipation);
         }
         return activityDao.endActivity(activity);
     }
@@ -85,9 +85,9 @@ public class ActivityService {
         return activityDao.deleteActivity(activityID);
     }
 
-    public List<FinishStateMessage> getActivityState(ActivityParticipation activityParticipation) {
+    public List<FinishStateMessage> getActivityState(int activityID) {
         List<FinishStateMessage> finishStateMessages = new ArrayList<>();
-        List<ActivityParticipation> activityParticipations = activityParticipationDao.selectActivityParticipationByActivityID(activityParticipation.getActivityID());
+        List<ActivityParticipation> activityParticipations = activityParticipationDao.selectActivityParticipationByActivityID(activityID);
         for (ActivityParticipation temp : activityParticipations) {
             Group group=groupDao.selectGroupByID(temp.getGroupID());
             finishStateMessages.add(new FinishStateMessage(group,temp));
@@ -140,6 +140,6 @@ public class ActivityService {
     public int finishActivity(ActivityParticipation activityParticipation) {
         ActivityParticipation temp = activityParticipationDao.selectActivityParticipationByActivityIDAndGroupID(activityParticipation);
         temp.setFinishTime(DateTimeUtil.getSystemTime());
-        return activityParticipationDao.endActivityParticipation(temp);
+        return activityParticipationDao.finishActivityParticipation(temp);
     }
 }

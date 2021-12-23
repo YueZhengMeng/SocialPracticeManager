@@ -26,7 +26,7 @@ public interface ActivityParticipationDao {
     int addActivityParticipation(ActivityParticipation ActivityParticipation);
 
     @Update("update activityparticipation set finishTime = #{finishTime},state = 1 where activityParticipation = #{activityParticipation}")
-    int endActivityParticipation(ActivityParticipation activityParticipation);
+    int finishActivityParticipation(ActivityParticipation activityParticipation);
 
     @Delete("delete from activityparticipation where activityParticipationID = #{activityParticipationID}")
     int deleteActivityParticipation(int ActivityParticipationID);

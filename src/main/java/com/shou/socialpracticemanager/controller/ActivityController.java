@@ -57,15 +57,15 @@ public class ActivityController {
         return activityService.joinActivity(activityParticipation);
     }
 
-    @PostMapping("/finishState")
+    @GetMapping("/finishState/{activityID}")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "某个Activity的所有Group完成情况",notes = "只需要activityID\n所有权限")
-    public List<FinishStateMessage> getActivityState(@RequestBody ActivityParticipation activityParticipation)
+    public List<FinishStateMessage> getActivityState(@PathVariable int activityID)
     {
-        return activityService.getActivityState(activityParticipation);
+        return activityService.getActivityState(activityID);
     }
 
-    @PostMapping("/finish")
+    @PutMapping("/finish")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "某个Group完成一个Activity",notes = "只需要activityID和GroupID\n所有权限")
     public int finishActivity(@RequestBody ActivityParticipation activityParticipation)
