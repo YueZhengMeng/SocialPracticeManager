@@ -74,19 +74,37 @@ public class GroupService {
         }
     }
 
-    public List<GroupMessage> getMyGroup() {
+    public List<Integer> getMyGroupID()
+    {
         int userID = jwtUserDetailsService.getLoginUserId();
-        List<Integer> groupIDs = groupParticipationDao.selectGroupParticipationByUserID(userID)
+        return groupParticipationDao.selectGroupParticipationByUserID(userID)
                 .stream().mapToInt(GroupParticipation::getGroupID).boxed().toList();
+    }
+
+    public List<GroupMessage> getMyGroup() {
+        List<Integer> myGroupIDs = getMyGroupID();
         List<GroupMessage> groupMessage = new ArrayList<>();
-        for (Integer groupID : groupIDs) {
+        for (Integer groupID : myGroupIDs) {
             groupMessage.add(new GroupMessage(groupDao.selectGroupByID(groupID),1));
         }
         return groupMessage;
     }
 
-    public List<Group> getGroupByPracticeID(int practiceID) {
-        return groupDao.selectGroupByPracticeID(practiceID);
+    public List<GroupMessage> getGroupByPracticeID(int practiceID) {
+        List<Group> groups = groupDao.selectGroupByPracticeID(practiceID);
+        List<Integer> myGroupIDs = getMyGroupID();
+        List<GroupMessage> groupMessage = new ArrayList<>();
+        for (Group group : groups)
+        {
+            if (myGroupIDs.contains(group.getGroupID()))
+            {
+                groupMessage.add(new GroupMessage(group,1));
+            }
+            else {
+                groupMessage.add(new GroupMessage(group,0));
+            }
+        }
+        return groupMessage;
     }
 
     public List<Group> getGroupByActivityID(int activityID) {

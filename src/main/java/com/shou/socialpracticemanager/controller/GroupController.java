@@ -30,7 +30,7 @@ public class GroupController {
     @GetMapping("/ByPracticeID/{practiceID}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "获取某个Practice拥有的Group的信息",notes = "所有权限")
-    public List<Group> getGroupByPracticeID(@PathVariable int practiceID)
+    public List<GroupMessage> getGroupByPracticeID(@PathVariable int practiceID)
     {
         return groupService.getGroupByPracticeID(practiceID);
     }
