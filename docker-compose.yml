@@ -1,0 +1,91 @@
+version: "1"
+services:
+
+  MysqlSPM:
+    image: mysql
+    networks:
+      SPMnet:
+        aliases:
+          - MysqlSPM
+    container_name: MysqlSPM
+    volumes:
+      - "mysqlData:/var/lib/mysql"
+      - "mysqlConf:/etc/mysql/conf.d"
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  SPM1:
+    image: openjdk
+    networks:
+      SPMnet:
+        aliases:
+          - SPM1
+    container_name: SPM1
+    depends_on:
+      - MysqlSPM
+    volumes:
+      - "apps:/usr/apps"
+    ports:
+      - "9001:8080"
+    command: java -jar /usr/apps/SocialPracticeManager.jar
+
+  SPM2:
+    image: openjdk
+    networks:
+      SPMnet:
+        aliases:
+          - SPM2
+    container_name: SPM2
+    depends_on:
+      - MysqlSPM
+    volumes:
+      - "apps:/usr/apps"
+    ports:
+      - "9002:8080"
+    command: java -jar /usr/apps/SocialPracticeManager.jar
+
+  SPM3:
+    image: openjdk
+    networks:
+      SPMnet:
+        aliases:
+          - SPM3
+    container_name: SPM3
+    depends_on:
+      - MysqlSPM
+    volumes:
+      - "apps:/usr/apps"
+    ports:
+      - "9003:8080"
+    command: java -jar /usr/apps/SocialPracticeManager.jar
+
+  NginxSPM:
+    image: nginx
+    networks:
+      SPMnet:
+        aliases:
+          - NginxSPM
+    container_name: NginxSPM
+    depends_on:
+      - SPM1
+      - SPM2
+      - SPM3
+    volumes:
+      - "nginxHtml:/usr/share/nginx/html"
+      - "nginxConf:/etc/nginx/conf.d"
+    ports:
+      - "8081:80"
+      - "9000:9000"
+
+networks:
+  SPMnet:
+    driver: bridge
+
+volumes:
+  apps:
+  mysqlData:
+  mysqlConf:
+  nginxHtml:
+  nginxConf:

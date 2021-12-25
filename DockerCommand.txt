@@ -53,3 +53,19 @@ server {
     }
 }
 
+version: "1"
+services:
+  MysqlSPM:
+    image: mysql
+    networks:
+      SPMnet:
+        aliases:
+          - MysqlSPM
+    volumes:
+      - "mysqlData:/var/lib/mysql"
+      - "/mysqlConf:/etc/mysql/conf.d"
+    entrypoint:
+      MYSQL_ROOT_PASSWORD:root
+    ports:
+      - "3307:3306"
+
