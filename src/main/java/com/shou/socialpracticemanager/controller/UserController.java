@@ -17,20 +17,20 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "用户注册",notes = "所有权限")
-    int registerUser(@RequestBody User user)
-    {
-        return userService.registerUser(user);
-    }
-
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "查看所有User信息",notes = "管理员权限")
     List<User> getAllUser()
     {
         return userService.getAllUser();
+    }
+
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "用户注册",notes = "所有权限")
+    int registerUser(@RequestBody User user)
+    {
+        return userService.registerUser(user);
     }
 
     @GetMapping("/role")

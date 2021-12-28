@@ -54,13 +54,14 @@ public class PracticeService {
     public int creatPractice(String practiceName) {
         Practice practice = new Practice(practiceName);
         practiceDao.addPractice(practice);
-
+        int userID = jwtUserDetailsService.getLoginUserId();
+        String userName = jwtUserDetailsService.getLoginUserName();
         int practiceID = practiceDao.selectPracticeByNameAndStartTime(practice).getPracticeID();
-        Group group = new Group(practiceName + "TeacherGroup", practiceID);
+        Group group = new Group(userName + "老师的小组", practiceID);
         groupDao.addGroup(group);
 
-        int groupID = groupDao.selectGroupByNameAndPracticeID(practiceName + "TeacherGroup", practiceID).getGroupID();
-        int userID = jwtUserDetailsService.getLoginUserId();
+        int groupID = groupDao.selectGroupByNameAndPracticeID(practiceName + "老师的小组", practiceID).getGroupID();
+
         GroupParticipation groupParticipation = new GroupParticipation(groupID, userID);
         return groupParticipationDao.addGroupParticipation(groupParticipation);
 
